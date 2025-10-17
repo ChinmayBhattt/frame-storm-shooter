@@ -15,6 +15,7 @@ const Index = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [dragStart, setDragStart] = useState({ x: 0, y: 0 });
   const [showEditor, setShowEditor] = useState(false);
+  const [showUploadOptions, setShowUploadOptions] = useState(false);
   
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const previewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -39,12 +40,12 @@ const Index = () => {
       
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      // Calculate the area for user photo (center of frame with some padding)
+      // Calculate the area for user photo (center of frame - transparent area)
       const photoArea = {
-        x: canvas.width * 0.24,
-        y: canvas.height * 0.12,
-        width: canvas.width * 0.52,
-        height: canvas.height * 0.64,
+        x: canvas.width * 0.15,
+        y: canvas.height * 0.08,
+        width: canvas.width * 0.70,
+        height: canvas.height * 0.68,
       };
       
       ctx.save();
@@ -255,7 +256,7 @@ const Index = () => {
         {/* CTA Buttons */}
         <div className="flex flex-wrap justify-center gap-4 mb-8">
           <Button
-            onClick={() => fileInputRef.current?.click()}
+            onClick={() => setShowUploadOptions(!showUploadOptions)}
             className="btn-glow bg-primary hover:bg-primary/90 text-primary-foreground font-bold text-lg px-8 py-6"
             size="lg"
           >
@@ -304,34 +305,36 @@ const Index = () => {
         </div>
 
         {/* Upload Options */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-3xl mx-auto">
-          <Button
-            onClick={startCamera}
-            variant="outline"
-            className="border-2 border-secondary text-secondary hover:bg-secondary/10 h-24 text-lg font-semibold"
-          >
-            <Camera className="mr-2 w-6 h-6" />
-            Camera
-          </Button>
-          
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            variant="outline"
-            className="border-2 border-primary text-primary hover:bg-primary/10 h-24 text-lg font-semibold"
-          >
-            <Upload className="mr-2 w-6 h-6" />
-            Browse
-          </Button>
-          
-          <Button
-            onClick={() => fileInputRef.current?.click()}
-            variant="outline"
-            className="border-2 border-accent text-accent hover:bg-accent/10 h-24 text-lg font-semibold"
-          >
-            <ImageIcon className="mr-2 w-6 h-6" />
-            Gallery
-          </Button>
-        </div>
+        {showUploadOptions && (
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8 max-w-3xl mx-auto animate-fade-in">
+            <Button
+              onClick={startCamera}
+              variant="outline"
+              className="border-2 border-secondary text-secondary hover:bg-secondary/10 h-24 text-lg font-semibold"
+            >
+              <Camera className="mr-2 w-6 h-6" />
+              Camera
+            </Button>
+            
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              variant="outline"
+              className="border-2 border-primary text-primary hover:bg-primary/10 h-24 text-lg font-semibold"
+            >
+              <Upload className="mr-2 w-6 h-6" />
+              Browse
+            </Button>
+            
+            <Button
+              onClick={() => fileInputRef.current?.click()}
+              variant="outline"
+              className="border-2 border-accent text-accent hover:bg-accent/10 h-24 text-lg font-semibold"
+            >
+              <ImageIcon className="mr-2 w-6 h-6" />
+              Gallery
+            </Button>
+          </div>
+        )}
 
         <input
           ref={fileInputRef}
