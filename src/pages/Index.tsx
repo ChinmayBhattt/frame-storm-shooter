@@ -42,11 +42,12 @@ const Index = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
       // Calculate the area for user photo (center of frame - transparent area)
+      // Adjusted to be more restrictive to prevent overflow
       const photoArea = {
-        x: canvas.width * 0.15,
-        y: canvas.height * 0.08,
-        width: canvas.width * 0.70,
-        height: canvas.height * 0.68,
+        x: canvas.width * 0.175,
+        y: canvas.height * 0.095,
+        width: canvas.width * 0.65,
+        height: canvas.height * 0.655,
       };
       
       // Draw background pattern in photo area FIRST (behind everything)
