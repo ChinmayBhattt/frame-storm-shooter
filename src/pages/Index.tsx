@@ -49,12 +49,9 @@ const Index = () => {
         height: canvas.height * 0.68,
       };
       
-      // Draw background pattern in photo area
+      // Draw background pattern in photo area FIRST (behind everything)
       const bgPattern = new Image();
       bgPattern.src = editorBg;
-      bgPattern.onload = () => {
-        ctx.drawImage(bgPattern, photoArea.x, photoArea.y, photoArea.width, photoArea.height);
-      };
       ctx.drawImage(bgPattern, photoArea.x, photoArea.y, photoArea.width, photoArea.height);
       
       ctx.save();
