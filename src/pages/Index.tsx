@@ -8,6 +8,7 @@ import frameImage from "@/assets/frame-hackstorm.png";
 import logoHackersUnity from "@/assets/logo-hackers-unity.png";
 import logoHackstorm from "@/assets/logo-hackstorm.png";
 import heroBg from "@/assets/hero-bg.jpg";
+import editorBg from "@/assets/editor-bg.jpg";
 
 const Index = () => {
   const [userImage, setUserImage] = useState<HTMLImageElement | null>(null);
@@ -48,9 +49,17 @@ const Index = () => {
         height: canvas.height * 0.68,
       };
       
+      // Draw background pattern in photo area
+      const bgPattern = new Image();
+      bgPattern.src = editorBg;
+      bgPattern.onload = () => {
+        ctx.drawImage(bgPattern, photoArea.x, photoArea.y, photoArea.width, photoArea.height);
+      };
+      ctx.drawImage(bgPattern, photoArea.x, photoArea.y, photoArea.width, photoArea.height);
+      
       ctx.save();
       
-      // Create clipping path for photo area
+      // Create clipping path for photo area - this ensures image stays within bounds
       ctx.beginPath();
       ctx.rect(photoArea.x, photoArea.y, photoArea.width, photoArea.height);
       ctx.clip();
@@ -375,21 +384,27 @@ const Index = () => {
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               {/* Canvas Preview */}
               <div className="space-y-4">
-                <div 
-                  className="relative bg-muted rounded-lg overflow-hidden cursor-move touch-none"
-                  onPointerDown={handlePointerDown}
-                  onPointerMove={handlePointerMove}
-                  onPointerUp={handlePointerUp}
-                  onWheel={handleWheel}
-                >
-                  <canvas
-                    ref={canvasRef}
-                    className="w-full h-auto"
-                  />
-                  <p className="text-xs text-muted-foreground text-center mt-2">
-                    Drag to move • Scroll to zoom
-                  </p>
-                </div>
+              <div 
+                className="relative rounded-lg overflow-hidden cursor-move touch-none"
+                style={{
+                  backgroundImage: `url(${editorBg})`,
+                  backgroundSize: "cover",
+                  backgroundPosition: "center",
+                }}
+                onPointerDown={handlePointerDown}
+                onPointerMove={handlePointerMove}
+                onPointerUp={handlePointerUp}
+                onWheel={handleWheel}
+              >
+                <canvas
+                  ref={canvasRef}
+                  className="w-full h-auto"
+                  style={{ display: 'block' }}
+                />
+                <p className="text-xs text-muted-foreground text-center mt-2">
+                  Drag to move • Scroll to zoom
+                </p>
+              </div>
               </div>
 
               {/* Controls */}
